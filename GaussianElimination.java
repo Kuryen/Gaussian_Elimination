@@ -12,43 +12,25 @@ public class GaussianElimination {
             }
 
             double[][] A = new double[n][n+1]; // Augmented matrix
-            System.out.println("Would you like to provide a filename with coefficients? (y/n)");
-            String choice = scanner.next().trim().toLowerCase();
-            
-            if (choice.equals("y")) {
-                System.out.println("Enter filename:");
-                String filename = scanner.next();
-                try {
-                    A = readMatrixFromFile(filename, n);
-                } catch (FileNotFoundException e) {
-                    System.out.println("Error, please recheck for the correct filename and try again.");
-                    return;
-                }
-            } else {
-                A = readMatrixFromUser(scanner, n);
+            System.out.println("Enter filename:");
+            String filename = scanner.next();
+            try {
+                A = readMatrixFromFile(filename, n);
+            } catch (FileNotFoundException e) {
+                System.out.println("Error, please recheck for the correct filename and try again.");
+                return;
             }
+
             System.out.println("Initial Augmented Matrix:");
             printMatrix(A);
             
             double[] solutions = gaussianEliminationWithPivoting(A);
             System.out.println("Solutions:");
-            char variable = 'x';
+            char[] variables = {'x', 'y', 'z', 't', 'u', 'v', 'w', 'a', 'b', 'c'};
             for (int i = 0; i < n; i++) {
-                System.out.printf("%c = %.4f%n", (char)(variable + i), solutions[i]);
+                System.out.printf("%c = %.4f%n", variables[i], solutions[i]);
             }
         }
-    }
-    
-    private static double[][] readMatrixFromUser(Scanner scanner, int n) {
-        double[][] A = new double[n][n+1];
-        System.out.println("Enter the augmented matrix row by row (include the constant term):");
-        for (int i = 0; i < n; i++) {
-            System.out.printf("Row %d: ", i + 1);
-            for (int j = 0; j < n + 1; j++) {
-                A[i][j] = scanner.nextDouble();
-            }
-        }
-        return A;
     }
     
     private static double[][] readMatrixFromFile(String filename, int n) throws FileNotFoundException {
